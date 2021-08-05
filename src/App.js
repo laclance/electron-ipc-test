@@ -1,7 +1,21 @@
 import logo from './logo.svg';
 import './App.css';
+import { Capacitor } from '@capacitor/core'
 
 function App() {
+
+  async function testEvent() {
+    if (Capacitor.getPlatform() === 'electron') {
+      const { ipcRenderer } = window.require('electron');
+      try {
+        const resp = await ipcRenderer.invoke('my-event', ['Test']);
+        window.alert(resp);
+      } catch(e) {
+        window.alert(e.message);
+      }
+    }
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -17,6 +31,7 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={testEvent}>Test Event</button>
       </header>
     </div>
   );
